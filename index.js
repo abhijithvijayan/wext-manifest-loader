@@ -1,9 +1,25 @@
-'use strict';
+/**
+ *  @author abhijithvijayan <abhijithvijayan.in>
+ */
 
-module.exports = (input, {postfix = 'rainbows'} = {}) => {
-	if (typeof input !== 'string') {
-		throw new TypeError(`Expected a string, got ${typeof input}`);
-	}
+const transformVendorKeys = require('./transformVendorKeys');
 
-	return `${input} & ${postfix}`;
+exports.chrome = input => {
+	const manifest = transformVendorKeys(input, 'chrome');
+	return { name: 'manifest.json', content: JSON.stringify(manifest) };
+};
+
+exports.firefox = input => {
+	const manifest = transformVendorKeys(input, 'firefox');
+	return { name: 'manifest.json', content: JSON.stringify(manifest) };
+};
+
+exports.opera = input => {
+	const manifest = transformVendorKeys(input, 'opera');
+	return { name: 'manifest.json', content: JSON.stringify(manifest) };
+};
+
+exports.edge = input => {
+	const manifest = transformVendorKeys(input, 'edge');
+	return { name: 'manifest.json', content: JSON.stringify(manifest) };
 };
