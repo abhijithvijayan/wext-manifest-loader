@@ -9,7 +9,8 @@
 	},
 	"scripts": {
 		"lint": "eslint .",
-		"lint:fix": "eslint . --fix"
+		"lint:fix": "eslint . --fix",
+		"pack:list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz"
 	},
 	"files": [
 		"index.js"
@@ -23,7 +24,6 @@
 		"edge",
 		"opera"
 	],
-	"dependencies": {},
 	"devDependencies": {
 		"babel-eslint": "^10.0.3",
 		"eslint": "^6.6.0",
