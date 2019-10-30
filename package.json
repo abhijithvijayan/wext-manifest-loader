@@ -4,6 +4,7 @@
 	"description": "Webextension Manifest Generator",
 	"license": "MIT",
 	"author": "abhijithvijayan",
+	"repository": "https://github.com/abhijithvijayan/wext-manifest.git",
 	"engines": {
 		"node": ">=8"
 	},
