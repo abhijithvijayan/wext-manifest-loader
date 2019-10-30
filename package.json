@@ -1,6 +1,6 @@
 {
 	"name": "wext-manifest",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "Webextension Manifest Generator",
 	"license": "MIT",
 	"author": "abhijithvijayan",
@@ -13,7 +13,9 @@
 		"pack:list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz"
 	},
 	"files": [
-		"index.js"
+		"index.js",
+		"vendors.json",
+		"transformVendorKeys.js"
 	],
 	"keywords": [
 		"webextension",
