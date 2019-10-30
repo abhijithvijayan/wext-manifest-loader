@@ -6,6 +6,15 @@ Package that compiles WebExtension manifest.json files that works for Chrome, Fi
 
 This module will take a definition input for the manifest, and return you filename and content for the specified browser.
 
+## Implemented browsers
+
+| Browser | Implemented |
+| ------- | :---------: |
+| Chrome  |     ✅      |
+| Edge    |     ✅      |
+| Firefox |     ✅      |
+| Opera   |     ✅      |
+
 ## Installation
 
 ```sh
@@ -20,7 +29,7 @@ const wextManifest = require("wext-manifest");
 const input = {
 	manifest_version: 2,
 	name: "Sample WebExtension",
-	version: 0.0.1,
+	version: "0.0.1",
 
 	icons: {
 		"16": "assets/icons/favicon-16.png",
@@ -72,17 +81,46 @@ const input = {
 
 console.log(wextManifest.firefox(input));
 // => { name: 'manifest.json', content: '{"manifest_version":2...' }
-
 ```
 
-## Implemented browsers
+### What are vendor prefixed manifest keys?
 
-| Browser | Implemented |
-| ------- | :---------: |
-| Chrome  |     ✅      |
-| Edge    |     ✅      |
-| Firefox |     ✅      |
-| Opera   |     ✅      |
+Vendor prefixed manifest keys allow you to write one `manifest.json` for multible vendors.
+
+```js
+{
+  "__chrome__name": "SuperChrome",
+  "__firefox__name": "SuperFox",
+  "__edge__name": "SuperEdge",
+  "__opera__name": "SuperOpera"
+}
+```
+
+if the vendor is `chrome` this compiles to:
+
+```js
+{
+  "name": "SuperChrome",
+}
+```
+
+---
+
+Add keys to multiple vendors by seperating them with | in the prefix
+
+```
+{
+  __chrome|opera__name: "SuperBlink"
+}
+```
+
+if the vendor is `chrome` or `opera`, this compiles to:
+
+```
+{
+  "name": "SuperBlink"
+}
+```
 
 ## Webpack usage
 
