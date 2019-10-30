@@ -1,0 +1,24 @@
+{
+	"name": "wext-manifest",
+	"version": "0.0.1",
+	"description": "Webextension Manifest Generator",
+	"license": "MIT",
+	"author": "abhijithvijayan",
+	"engines": {
+		"node": ">=8"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"webextension",
+		"manifest",
+		"wext",
+		"chrome",
+		"firefox",
+		"edge",
+		"opera"
+	],
+	"dependencies": {},
+	"devDependencies": {}
+}
