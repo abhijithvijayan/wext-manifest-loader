@@ -3,10 +3,11 @@ const browserVendors = require('./vendors.json');
 const vendorRegExp = new RegExp(`^__((?:(?:${browserVendors.join('|')})\\|?)+)__(.*)`);
 
 /**
- *  Custom fork of https://github.com/webextension-toolbox/webpack-webextension-plugin/blob/master/manifest-utils/transform-vendor-keys.js
+ *  Custom fork of `webextension-toolbox/webpack-webextension-plugin
  */
 const transformVendorKeys = (manifest, vendor) => {
-	if (typeof manifest === 'object') {
+	// [fix] arrays transforming to objects
+	if (typeof manifest === 'object' && !Array.isArray(manifest)) {
 		return Object.entries(manifest).reduce((newManifest, [key, value]) => {
 			const match = key.match(vendorRegExp);
 
