@@ -2,18 +2,20 @@
 
 > Webextension Manifest Generator
 
-Package that compiles WebExtension manifest.json files that works for Chrome, Firefox, Opera and Edge.
+Package that compiles manifest.json files for WebExtensions
+
+## Browser Support
+
+| [![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](https://chrome.google.com/webstore/detail/kutt/pklakpjfiegjacoppcodencchehlfnpd) | [![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](https://addons.mozilla.org/firefox/addon/kutt/) | [![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png)](CONTRIBUTING.md#for-opera-users) |
+![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png) |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 49 & later ✔ | 52 & later ✔ | 36 & later ✔ | Latest ✔ |
 
 This module will take a definition input for the manifest, and return you filename and content for the specified browser.
 
-## Implemented browsers
+### Looking for Web Extension starter?
 
-| Browser | Implemented |
-| ------- | :---------: |
-| Chrome  |     ✅      |
-| Edge    |     ✅      |
-| Firefox |     ✅      |
-| Opera   |     ✅      |
+Checkout [web-extension-starter](https://github.com/abhijithvijayan/web-extension-starter) that uses this package
 
 ## Installation
 
@@ -85,14 +87,14 @@ console.log(wextManifest.firefox(input));
 
 ### What are vendor prefixed manifest keys?
 
-Vendor prefixed manifest keys allow you to write one `manifest.json` for multible vendors.
+Vendor prefixed manifest keys allow you to write one `manifest.json` for multiple vendors.
 
 ```js
 {
-  "__chrome__name": "SuperChrome",
-  "__firefox__name": "SuperFox",
-  "__edge__name": "SuperEdge",
-  "__opera__name": "SuperOpera"
+  "__chrome__name": "AwesomeChrome",
+  "__firefox__name": "AwesomeFox",
+  "__edge__name": "AwesomeEdge",
+  "__opera__name": "AwesomeOpera"
 }
 ```
 
@@ -100,7 +102,7 @@ if the vendor is `chrome` this compiles to:
 
 ```js
 {
-  "name": "SuperChrome",
+  "name": "AwesomeChrome",
 }
 ```
 
@@ -110,7 +112,7 @@ Add keys to multiple vendors by seperating them with | in the prefix
 
 ```
 {
-  __chrome|opera__name: "SuperBlink"
+  __chrome|opera__name: "AwesomeExtension"
 }
 ```
 
@@ -118,11 +120,11 @@ if the vendor is `chrome` or `opera`, this compiles to:
 
 ```
 {
-  "name": "SuperBlink"
+  "name": "AwesomeExtension"
 }
 ```
 
-## Webpack usage
+## With Webpack
 
 You can easily use this module together with the [`write-webpack-plugin`](https://www.npmjs.com/package/write-webpack-plugin) to output the manifest file as part of your build process.
 
@@ -156,6 +158,10 @@ module.exports = {
 	]
 };
 ```
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
 
 ## License
 
