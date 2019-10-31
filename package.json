@@ -1,6 +1,6 @@
 {
 	"name": "wext-manifest",
-	"version": "1.0.1",
+	"version": "2.0.0",
 	"description": "Webextension Manifest Generator",
 	"license": "MIT",
 	"author": "abhijithvijayan",
