@@ -1,5 +1,4 @@
-const browserVendors = require('./vendors.json');
-
+const browserVendors = ['chrome', 'firefox', 'opera', 'edge'];
 const vendorRegExp = new RegExp(`^__((?:(?:${browserVendors.join('|')})\\|?)+)__(.*)`);
 
 /**
