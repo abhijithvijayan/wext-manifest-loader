@@ -9,7 +9,7 @@ Package that compiles manifest.json files for WebExtensions
 | [![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](https://chrome.google.com/webstore/detail/kutt/pklakpjfiegjacoppcodencchehlfnpd) | [![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](https://addons.mozilla.org/firefox/addon/kutt/) | [![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png)](CONTRIBUTING.md#for-opera-users) |
 ![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png) |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 49 & later ✔ | 52 & later ✔ | 36 & later ✔ | Latest ✔ |
+| ✔ | ✔ | ✔ | ✔ |
 
 This module will take a definition input for the manifest, and return you filename and content for the specified browser.
 
