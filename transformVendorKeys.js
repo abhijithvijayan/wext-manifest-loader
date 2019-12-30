@@ -2,11 +2,16 @@ const browserVendors = ['chrome', 'firefox', 'opera', 'edge'];
 const vendorRegExp = new RegExp(`^__((?:(?:${browserVendors.join('|')})\\|?)+)__(.*)`);
 
 /**
- *  Custom fork of `webextension-toolbox/webpack-webextension-plugin
+ *  Fork of `webextension-toolbox/webpack-webextension-plugin`
  */
 const transformVendorKeys = (manifest, vendor) => {
-	// [fix] arrays transforming to objects
-	if (typeof manifest === 'object' && !Array.isArray(manifest)) {
+	if (Array.isArray(manifest)) {
+		return manifest.map(newManifest => {
+			return transformVendorKeys(newManifest, vendor);
+		});
+	}
+
+	if (typeof manifest === 'object') {
 		return Object.entries(manifest).reduce((newManifest, [key, value]) => {
 			const match = key.match(vendorRegExp);
 
@@ -27,5 +32,4 @@ const transformVendorKeys = (manifest, vendor) => {
 
 	return manifest;
 };
-
 module.exports = transformVendorKeys;
