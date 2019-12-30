@@ -6,7 +6,7 @@
 	"author": "abhijithvijayan",
 	"repository": "https://github.com/abhijithvijayan/wext-manifest.git",
 	"engines": {
-		"node": ">=8"
+		"node": ">=8 <=12"
 	},
 	"scripts": {
 		"lint": "eslint .",
