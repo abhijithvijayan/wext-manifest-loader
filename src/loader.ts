@@ -38,8 +38,11 @@ const transformVendorKeys = (manifest, vendor: string) => {
 };
 
 export default function loader(source): string | Error {
-	// eslint-disable-next-line no-unused-expressions
-	this.cacheable && this.cacheable();
+	if (this.cacheable) {
+		this.cacheable();
+	}
+
+	// ToDo: return errors properly to webpack
 
 	let content;
 	// parse JSON
@@ -65,8 +68,11 @@ export default function loader(source): string | Error {
 
 	// Transform manifest
 	const manifest = transformVendorKeys(content, vendor);
-	const outputPath: string = loaderUtils.interpolateName(this, '[name].[ext]', { source });
+	// ToDo: if EXTENSION_VERSION exist in env, update version field
+
+	const outputPath: string = loaderUtils.interpolateName(this, 'manifest.json', { source });
 	const publicPath = `__webpack_public_path__ + ${JSON.stringify(outputPath)}`;
+
 	// separators \u2028 and \u2029 are treated as a new line in ES5 JavaScript and thus can break the entire JSON
 	const formattedJson: string = JSON.stringify(manifest, null, 2)
 		.replace(/\u2028/g, '\\u2028')
@@ -75,7 +81,5 @@ export default function loader(source): string | Error {
 	// emit file content
 	this.emitFile(outputPath, formattedJson);
 
-	// ToDo: don't generate js bundle for this
-	//  either return json to chain to `file-loader`
 	return `module.exports = ${publicPath};`;
 }
