@@ -1,10 +1,10 @@
 {
-	"name": "wext-manifest",
-	"version": "2.2.0",
-	"description": "Webextension Manifest Generator",
+	"name": "wext-manifest-loader",
+	"version": "0.0.0",
+	"description": "Webextension Manifest Generator that you specify `manifest.json` properties to appear only in specific browsers.",
 	"license": "MIT",
 	"author": "abhijithvijayan",
-	"repository": "https://github.com/abhijithvijayan/wext-manifest.git",
+	"repository": "https://github.com/abhijithvijayan/wext-manifest-loader.git",
 	"engines": {
 		"node": ">=10.0.0"
 	},
