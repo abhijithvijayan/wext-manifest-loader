@@ -16,9 +16,10 @@
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix"
 	},
-	"bin": "./dist/loader.js",
+	"main": "lib/loader.js",
+	"types": "lib/index.d.ts",
 	"files": [
-		"/dist"
+		"/lib"
 	],
 	"keywords": [
 		"webextension",

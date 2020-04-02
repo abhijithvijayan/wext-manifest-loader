@@ -1,20 +1,24 @@
 {
 	"compilerOptions": {
 		"target": "es2018",
-		"outDir": "dist",
+		"outDir": "lib",
 		"module": "commonjs",
 		"moduleResolution": "node",
-		"esModuleInterop": true,
-		"skipDefaultLibCheck": true,
-		"sourceMap": true,
+		"resolveJsonModule": true,
 		"declaration": true,
+		"esModuleInterop": true,
+		"pretty": true,
+		"newLine": "lf",
+		"stripInternal": true,
+		// "strict": true,
+		"removeComments": true,
 		"noImplicitReturns": true,
 		"noUnusedLocals": true,
-		"noUnusedParameters": false,
+		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
-		"removeComments": true,
-		"suppressImplicitAnyIndexErrors": true,
-		"forceConsistentCasingInFileNames": true
+		"noEmitOnError": true,
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true
 	},
 	"include": [
 		"src/**/*"
