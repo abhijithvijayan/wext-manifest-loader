@@ -38,7 +38,7 @@ const transformVendorKeys = (manifest, vendor: string) => {
 	return manifest;
 };
 
-export default function loader(source): string | Error {
+export function loader(source): string | Error {
 	if (this.cacheable) {
 		this.cacheable();
 	}
