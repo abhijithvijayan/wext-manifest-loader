@@ -4,6 +4,7 @@
 
 import loaderUtils from 'loader-utils';
 
+const LOADER_NAME = 'wext-manifest-loader';
 const browserVendors: string[] = ['chrome', 'firefox', 'opera', 'edge'];
 const vendorRegExp = new RegExp(`^__((?:(?:${browserVendors.join('|')})\\|?)+)__(.*)`);
 
@@ -42,15 +43,13 @@ export default function loader(source): string | Error {
 		this.cacheable();
 	}
 
-	// ToDo: return errors properly to webpack
-
-	let content;
+	let content = {};
 	// parse JSON
 	if (typeof source === 'string') {
 		try {
 			content = JSON.parse(source);
 		} catch (err) {
-			return new Error('Invalid manifest.json');
+			this.emitError(err instanceof Error ? err : new Error(err));
 		}
 	}
 
@@ -60,10 +59,10 @@ export default function loader(source): string | Error {
 	if (vendor) {
 		// vendor not in list
 		if (browserVendors.indexOf(vendor) < 0) {
-			return new Error(`Target browser: ${vendor} is not supported`);
+			this.emitError(new Error(`${LOADER_NAME}: browser ${vendor} is not supported`));
 		}
 	} else {
-		return new Error('TARGET_BROWSER variable missing');
+		this.emitError(new Error(`${LOADER_NAME}: TARGET_BROWSER variable missing`));
 	}
 
 	// Transform manifest
