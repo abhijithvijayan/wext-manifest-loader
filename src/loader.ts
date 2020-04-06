@@ -97,7 +97,8 @@ export function loader(source): string | Error {
 	if (usePackageJSONVersion) {
 		try {
 			const packageJSON = JSON.parse(fs.readFileSync(packageJSONPath, 'utf-8'));
-			manifest.version = packageJSON.version;
+			// replace `2.0.0-beta.1` to `2.0.0.1`
+			manifest.version = packageJSON.version.replace('-beta.', '.');
 		} catch (err) {
 			this.emitError(err instanceof Error ? err : new Error(err));
 		}
