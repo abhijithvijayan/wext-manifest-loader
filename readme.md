@@ -48,6 +48,8 @@ You can easily use this module together with the [`wext-manifest-webpack-plugin`
 #### Sample manifest with vendor prefixed keys:
 https://github.com/abhijithvijayan/web-extension-starter/blob/react-typescript/src/manifest.json
 
+> **webpack.config.js**
+
 ```js
 // ... other plugins
 const WextManifestWebpackPlugin = require("wext-manifest-webpack-plugin");
@@ -81,6 +83,37 @@ module.exports = {
         new WextManifestWebpackPlugin(),
         // ...
     ],
+};
+```
+
+## Options
+
+### `usePackageJSONVersion`
+
+Type: `Boolean`
+Default: `false`
+
+If true, updates manifest.json `version` field with `package.json` version. It is often useful for easy release of web-extension.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        type: 'javascript/auto', // prevent webpack handling json with its own loaders,
+        test: /manifest\.json$/,
+        use: {
+            loader: 'wext-manifest-loader',
+            options: {
+                usePackageJSONVersion: true,
+            },
+        },
+        exclude: /node_modules/,
+      },
+    ],
+  },
 };
 ```
 <hr />
