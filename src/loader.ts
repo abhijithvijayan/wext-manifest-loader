@@ -2,11 +2,25 @@
  *  @author abhijithvijayan <abhijithvijayan.in>
  */
 
-import loaderUtils from 'loader-utils';
+import fs from 'fs';
+import path from 'path';
+import validateOptions from 'schema-utils';
+import { getOptions, interpolateName } from 'loader-utils';
 
 const LOADER_NAME = 'wext-manifest-loader';
+const packageJSONPath: string = path.resolve('./package.json');
 const browserVendors: string[] = ['chrome', 'firefox', 'opera', 'edge'];
 const vendorRegExp = new RegExp(`^__((?:(?:${browserVendors.join('|')})\\|?)+)__(.*)`);
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const schema: any = {
+	type: 'object',
+	properties: {
+		usePackageJSONVersion: {
+			type: 'boolean',
+		},
+	},
+};
 
 // Fork of `webextension-toolbox/webpack-webextension-plugin`
 const transformVendorKeys = (manifest, vendor: string) => {
@@ -43,6 +57,17 @@ export function loader(source): string | Error {
 		this.cacheable();
 	}
 
+	this.addDependency(packageJSONPath);
+
+	// get passed options
+	const options = getOptions(this);
+
+	validateOptions(schema, options, {
+		name: 'Wext Manifest Loader',
+	});
+
+	const usePackageJSONVersion: boolean = options.usePackageJSONVersion || false;
+
 	let content = {};
 	// parse JSON
 	if (typeof source === 'string') {
@@ -67,9 +92,18 @@ export function loader(source): string | Error {
 
 	// Transform manifest
 	const manifest = transformVendorKeys(content, vendor);
-	// ToDo: if EXTENSION_VERSION exist in env, update version field
 
-	const outputPath: string = loaderUtils.interpolateName(this, 'manifest.json', { source });
+	// update version field with package.json version
+	if (usePackageJSONVersion) {
+		try {
+			const packageJSON = JSON.parse(fs.readFileSync(packageJSONPath, 'utf-8'));
+			manifest.version = packageJSON.version;
+		} catch (err) {
+			this.emitError(err instanceof Error ? err : new Error(err));
+		}
+	}
+
+	const outputPath: string = interpolateName(this, 'manifest.json', { source });
 	const publicPath = `__webpack_public_path__ + ${JSON.stringify(outputPath)}`;
 
 	// separators \u2028 and \u2029 are treated as a new line in ES5 JavaScript and thus can break the entire JSON
