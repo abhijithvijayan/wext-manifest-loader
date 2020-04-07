@@ -33,6 +33,7 @@
 		"opera"
 	],
 	"devDependencies": {
+		"@abhijithvijayan/tsconfig": "^1.1.2",
 		"@types/loader-utils": "^1.1.3",
 		"@types/node": "^13.9.8",
 		"@typescript-eslint/eslint-plugin": "^2.25.0",
