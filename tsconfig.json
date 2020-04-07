@@ -6,6 +6,6 @@
 		"noImplicitAny": false
 	},
 	"include": [
-		"src/**/*"
+		"source"
 	]
 }
