@@ -15,7 +15,7 @@
 	],
 	"scripts": {
 		"dev": "tsc --watch",
-		"build": "tsc",
+		"build": "rimraf lib && tsc",
 		"pack:list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
 		"prepublishOnly": "yarn build",
 		"lint": "eslint .",
@@ -50,6 +50,7 @@
 		"eslint-plugin-react": "^7.19.0",
 		"eslint-plugin-react-hooks": "^3.0.0",
 		"prettier": "^2.0.2",
+		"rimraf": "^3.0.2",
 		"typescript": "^3.8.3"
 	},
 	"dependencies": {
