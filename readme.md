@@ -46,7 +46,7 @@ You can easily use this module together with the [`wext-manifest-webpack-plugin`
 **Note:** Make sure you pass a **TARGET_BROWSER** env variable with one of `chrome/firefox/edge/opera` value
 
 #### Sample manifest with vendor prefixed keys:
-https://github.com/abhijithvijayan/web-extension-starter/blob/react-typescript/src/manifest.json
+https://github.com/abhijithvijayan/web-extension-starter/blob/react-typescript/source/manifest.json
 
 > **webpack.config.js**
 
