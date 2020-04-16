@@ -1,6 +1,6 @@
 {
 	"name": "wext-manifest-loader",
-	"version": "1.1.5",
+	"version": "1.1.6",
 	"description": "Webpack loader that lets you specify `manifest.json` properties to appear only in specific browsers.",
 	"license": "MIT",
 	"author": "abhijithvijayan",
