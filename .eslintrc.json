@@ -1,23 +1,8 @@
 {
-	"extends": ["onepass"],
+	"extends": [
+		"@abhijithvijayan/eslint-config/typescript"
+	],
 	"rules": {
-		"no-console": 0,
-		"prettier/prettier": [
-			"error",
-			{
-				"trailingComma": "es5",
-				"singleQuote": true,
-				"printWidth": 120,
-				"tabWidth": 4
-			}
-		]
-	},
-	"settings": {
-		"import/resolver": {
-			"node": {
-				"extensions": [".js", ".ts"],
-				"moduleDirectory": ["node_modules", "src/"]
-			}
-		}
+		"no-console": 0
 	}
 }
