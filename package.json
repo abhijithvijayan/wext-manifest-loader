@@ -18,8 +18,8 @@
 		"build": "rimraf lib && tsc",
 		"pack:list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
 		"prepublishOnly": "yarn build",
-		"lint": "eslint .",
-		"lint:fix": "eslint . --fix"
+		"lint": "eslint . --ext .ts",
+		"lint:fix": "eslint . --ext .ts --fix"
 	},
 	"keywords": [
 		"webextension",
@@ -32,6 +32,10 @@
 		"edge",
 		"opera"
 	],
+	"dependencies": {
+		"loader-utils": "^2.0.0",
+		"schema-utils": "^2.6.5"
+	},
 	"devDependencies": {
 		"@abhijithvijayan/eslint-config": "1.0.1",
 		"@abhijithvijayan/tsconfig": "^1.1.2",
@@ -51,9 +55,5 @@
 		"prettier": "^2.0.4",
 		"rimraf": "^3.0.2",
 		"typescript": "^3.8.3"
-	},
-	"dependencies": {
-		"loader-utils": "^2.0.0",
-		"schema-utils": "^2.6.5"
 	}
 }

@@ -1,5 +1,8 @@
 /**
- *  @author abhijithvijayan <abhijithvijayan.in>
+ *  wext-manifest-loader
+ *
+ *  @author   abhijithvijayan <abhijithvijayan.in>
+ *  @license  MIT License
  */
 
 import fs from 'fs';
@@ -23,7 +26,8 @@ const schema: any = {
 };
 
 // Fork of `webextension-toolbox/webpack-webextension-plugin`
-const transformVendorKeys = (manifest, vendor: string) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const transformVendorKeys = (manifest, vendor: string): any => {
 	if (Array.isArray(manifest)) {
 		return manifest.map((newManifest) => {
 			return transformVendorKeys(newManifest, vendor);
