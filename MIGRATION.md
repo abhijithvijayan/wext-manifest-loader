@@ -65,7 +65,7 @@ module.exports = {
 
 ## The `manifest` file
 
-Copy contents of `src/manifest/index.js` and transform it to `src/manifest.json` using an online json transformer
+Copy contents of `src/manifest/index.js` and transform it to `src/manifest.json` using an [online json transformer](https://jsonformatter.curiousconcept.com/)
 
 **Input**
 ```js
