@@ -13,9 +13,19 @@ import {getOptions, interpolateName} from 'loader-utils';
 const LOADER_NAME = 'wext-manifest-loader';
 const packageJSONPath: string = path.resolve('./package.json');
 const browserVendors: string[] = ['chrome', 'firefox', 'opera', 'edge'];
+const envVariables: string[] = ['dev', 'prod'];
+// https://regex101.com/r/CNy9Qc/1
 const vendorRegExp = new RegExp(
   `^__((?:(?:${browserVendors.join('|')})\\|?)+)__(.*)`
 );
+// https://regex101.com/r/EBf90P/2
+const environmentRegExp = new RegExp(
+  `^__((?:(?:${envVariables.join('|')})))__(.*)`
+);
+enum ENV_KEYS {
+  DEV = 'dev',
+  PROD = 'prod',
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const schema: any = {
@@ -27,7 +37,7 @@ const schema: any = {
   },
 };
 
-// Fork of `webextension-toolbox/webpack-webextension-plugin`
+// Manually Forked from `webextension-toolbox/webpack-webextension-plugin`
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const transformVendorKeys = (manifest, vendor: string): any => {
   if (Array.isArray(manifest)) {
@@ -38,17 +48,37 @@ const transformVendorKeys = (manifest, vendor: string): any => {
 
   if (typeof manifest === 'object') {
     return Object.entries(manifest).reduce((newManifest, [key, value]) => {
-      const match = key.match(vendorRegExp);
+      // match with vendors regex
+      const vendorMatch: RegExpMatchArray = key.match(vendorRegExp);
 
-      if (match) {
-        const vendors: string[] = match[1].split('|');
+      if (vendorMatch) {
+        // match[1] => 'opera|firefox' => ['opera', 'firefox']
+        const vendors: string[] = vendorMatch[1].split('|');
 
         // Swap key with non prefixed name
         if (vendors.indexOf(vendor) > -1) {
-          newManifest[match[2]] = value;
+          // match[2] => will be the key
+          newManifest[vendorMatch[2]] = value;
         }
       } else {
-        newManifest[key] = transformVendorKeys(value, vendor);
+        // if no vendor keys are present, check if env keys are present
+        const envMatch: RegExpMatchArray = key.match(environmentRegExp);
+
+        if (envMatch) {
+          const isProd: boolean = process.env.NODE_ENV === 'production';
+          const envKey: string = envMatch[1];
+
+          // inject keys based on enviroment and keys passed
+          if (
+            (!isProd && envKey === ENV_KEYS.DEV) ||
+            (isProd && envKey === ENV_KEYS.PROD)
+          ) {
+            // match[2] => will be the key
+            newManifest[envMatch[2]] = value;
+          }
+        } else {
+          newManifest[key] = transformVendorKeys(value, vendor);
+        }
       }
 
       return newManifest;
