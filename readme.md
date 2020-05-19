@@ -25,17 +25,17 @@ Generate browser tailored `manifest.json` for Web Extensions that you specify pr
 
 This loader will take a definition input for the manifest, and return you content for the specified browser.
 
-### Looking for Web Extension starter?
+### Looking for Web Extension starter
 
 Checkout [web-extension-starter](https://github.com/abhijithvijayan/web-extension-starter) that uses this package
 
 ## Installation
 
 ```sh
-# npm
+# via npm
 npm install --save-dev wext-manifest-loader wext-manifest-webpack-plugin
 
-# yarn
+# or yarn
 yarn add wext-manifest-loader wext-manifest-webpack-plugin --dev
 ```
 
@@ -45,8 +45,9 @@ You can easily use this module together with the [`wext-manifest-webpack-plugin`
 
 **Note:** Make sure you pass a **TARGET_BROWSER** env variable with one of `chrome/firefox/edge/opera` value
 
-#### Sample manifest with vendor prefixed keys:
-https://github.com/abhijithvijayan/web-extension-starter/blob/react-typescript/source/manifest.json
+#### Sample manifest with vendor prefixed keys
+
+<https://github.com/abhijithvijayan/web-extension-starter/blob/react-typescript/source/manifest.json>
 
 > **webpack.config.js**
 
@@ -116,9 +117,12 @@ module.exports = {
   },
 };
 ```
+
 <hr />
 
-### What are vendor prefixed manifest keys?
+## FAQs
+
+### 1.What are vendor prefixed manifest keys
 
 Vendor prefixed manifest keys allow you to write one `manifest.json` for multiple vendors.
 
@@ -131,7 +135,7 @@ Vendor prefixed manifest keys allow you to write one `manifest.json` for multipl
 }
 ```
 
-if the vendor is `chrome` this compiles to:
+if the **TARGET_BROWSER** is `chrome` this compiles to:
 
 ```js
 {
@@ -141,7 +145,7 @@ if the vendor is `chrome` this compiles to:
 
 ---
 
-Add keys to multiple vendors by seperating them with | in the prefix
+Add keys to multiple vendors by seperating them with `|` in the prefix
 
 ```
 {
@@ -157,7 +161,33 @@ if the vendor is `chrome` or `opera`, this compiles to:
 }
 ```
 
+### 2. How can I conditionally set keys based on enviroment
+
+```js
+{
+  "__dev__name": "NameInDevelopment",
+  "__prod__name": "NameInProduction",
+}
+```
+
+if the **NODE_ENV** is `production` this compiles to:
+
+```js
+{
+  "name": "NameInProduction",
+}
+```
+
+else
+
+```js
+{
+  "name": "NameInDevelopment",
+}
+```
+
 ## Credits
+
 Thanks to [@fregante](https://github.com/fregante) for suggesting to convert initial (`wext-manifest`) module to webpack loader(`wext-manifest-loader`)
 
 ## Show your support
