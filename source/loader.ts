@@ -88,15 +88,15 @@ const transformVendorKeys = (manifest, vendor: string): any => {
   return manifest;
 };
 
-export function loader(context: any, source): void {
-  if (context.cacheable) {
-    context.cacheable();
+export function loader(this, source): string {
+  if (this.cacheable) {
+    this.cacheable();
   }
 
-  context.addDependency(packageJSONPath);
+  this.addDependency(packageJSONPath);
 
   // get passed options
-  const options = getOptions(context);
+  const options = getOptions(this);
 
   validateOptions(schema, options, {
     name: 'Wext Manifest Loader',
@@ -111,7 +111,7 @@ export function loader(context: any, source): void {
     try {
       content = JSON.parse(source);
     } catch (err) {
-      context.emitError(err);
+      this.emitError(err);
     }
   }
 
@@ -121,12 +121,12 @@ export function loader(context: any, source): void {
   if (vendor) {
     // vendor not in list
     if (browserVendors.indexOf(vendor) < 0) {
-      return context.emitError(
+      return this.emitError(
         `${LOADER_NAME}: browser ${vendor} is not supported`
       );
     }
   } else {
-    return context.emitError(`${LOADER_NAME}: TARGET_BROWSER variable missing`);
+    return this.emitError(`${LOADER_NAME}: TARGET_BROWSER variable missing`);
   }
 
   // Transform manifest
@@ -139,14 +139,14 @@ export function loader(context: any, source): void {
       // replace `2.0.0-beta.1` to `2.0.0.1`
       manifest.version = packageJSON.version.replace('-beta.', '.');
     } catch (err) {
-      context.emitError(err);
+      this.emitError(err);
     }
   }
 
-  const outputPath: string = interpolateName(context, 'manifest.json', {
+  const outputPath: string = interpolateName(this, 'manifest.json', {
     source,
   });
-  // const publicPath = `__webpack_public_path__ + ${JSON.stringify(outputPath)}`;
+  const publicPath = `__webpack_public_path__ + ${JSON.stringify(outputPath)}`;
 
   // separators \u2028 and \u2029 are treated as a new line in ES5 JavaScript and thus can break the entire JSON
   const formattedJson: string = JSON.stringify(manifest, null, 2)
@@ -154,5 +154,7 @@ export function loader(context: any, source): void {
     .replace(/\u2029/g, '\\u2029');
 
   // emit file content
-  context.emitFile(outputPath, formattedJson);
+  this.emitFile(outputPath, formattedJson);
+
+  return `module.exports = ${publicPath};`;
 }
