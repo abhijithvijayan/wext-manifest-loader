@@ -49,7 +49,7 @@ const transformVendorKeys = (manifest, vendor: string): any => {
   if (typeof manifest === 'object') {
     return Object.entries(manifest).reduce((newManifest, [key, value]) => {
       // match with vendors regex
-      const vendorMatch: RegExpMatchArray = key.match(vendorRegExp);
+      const vendorMatch: RegExpMatchArray | null = key.match(vendorRegExp);
 
       if (vendorMatch) {
         // match[1] => 'opera|firefox' => ['opera', 'firefox']
@@ -62,7 +62,7 @@ const transformVendorKeys = (manifest, vendor: string): any => {
         }
       } else {
         // if no vendor keys are present, check if env keys are present
-        const envMatch: RegExpMatchArray = key.match(environmentRegExp);
+        const envMatch: RegExpMatchArray | null = key.match(environmentRegExp);
 
         if (envMatch) {
           const isProd: boolean = process.env.NODE_ENV === 'production';
@@ -88,21 +88,22 @@ const transformVendorKeys = (manifest, vendor: string): any => {
   return manifest;
 };
 
-export function loader(source): string | Error {
-  if (this.cacheable) {
-    this.cacheable();
+export function loader(context: any, source): void {
+  if (context.cacheable) {
+    context.cacheable();
   }
 
-  this.addDependency(packageJSONPath);
+  context.addDependency(packageJSONPath);
 
   // get passed options
-  const options = getOptions(this);
+  const options = getOptions(context);
 
   validateOptions(schema, options, {
     name: 'Wext Manifest Loader',
   });
 
-  const usePackageJSONVersion: boolean = options.usePackageJSONVersion || false;
+  const usePackageJSONVersion: boolean =
+    (options.usePackageJSONVersion && true) || false;
 
   let content = {};
   // parse JSON
@@ -110,7 +111,7 @@ export function loader(source): string | Error {
     try {
       content = JSON.parse(source);
     } catch (err) {
-      this.emitError(err instanceof Error ? err : new Error(err));
+      context.emitError(err);
     }
   }
 
@@ -120,14 +121,12 @@ export function loader(source): string | Error {
   if (vendor) {
     // vendor not in list
     if (browserVendors.indexOf(vendor) < 0) {
-      this.emitError(
-        new Error(`${LOADER_NAME}: browser ${vendor} is not supported`)
+      return context.emitError(
+        `${LOADER_NAME}: browser ${vendor} is not supported`
       );
     }
   } else {
-    this.emitError(
-      new Error(`${LOADER_NAME}: TARGET_BROWSER variable missing`)
-    );
+    return context.emitError(`${LOADER_NAME}: TARGET_BROWSER variable missing`);
   }
 
   // Transform manifest
@@ -140,12 +139,14 @@ export function loader(source): string | Error {
       // replace `2.0.0-beta.1` to `2.0.0.1`
       manifest.version = packageJSON.version.replace('-beta.', '.');
     } catch (err) {
-      this.emitError(err instanceof Error ? err : new Error(err));
+      context.emitError(err);
     }
   }
 
-  const outputPath: string = interpolateName(this, 'manifest.json', {source});
-  const publicPath = `__webpack_public_path__ + ${JSON.stringify(outputPath)}`;
+  const outputPath: string = interpolateName(context, 'manifest.json', {
+    source,
+  });
+  // const publicPath = `__webpack_public_path__ + ${JSON.stringify(outputPath)}`;
 
   // separators \u2028 and \u2029 are treated as a new line in ES5 JavaScript and thus can break the entire JSON
   const formattedJson: string = JSON.stringify(manifest, null, 2)
@@ -153,7 +154,5 @@ export function loader(source): string | Error {
     .replace(/\u2029/g, '\\u2029');
 
   // emit file content
-  this.emitFile(outputPath, formattedJson);
-
-  return `module.exports = ${publicPath};`;
+  context.emitFile(outputPath, formattedJson);
 }

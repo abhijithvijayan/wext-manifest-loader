@@ -3,6 +3,7 @@
 		"@abhijithvijayan/eslint-config/typescript"
 	],
 	"rules": {
-		"no-console": 0
+		"no-console": "off",
+		"consistent-return": "off"
 	}
 }
