@@ -22,7 +22,7 @@ const vendorRegExp = new RegExp(
 const environmentRegExp = new RegExp(
   `^__((?:(?:${envVariables.join('|')})))__(.*)`
 );
-enum ENV_KEYS {
+enum ENVKeys {
   DEV = 'dev',
   PROD = 'prod',
 }
@@ -70,8 +70,8 @@ const transformVendorKeys = (manifest, vendor: string): any => {
 
           // inject keys based on enviroment and keys passed
           if (
-            (!isProd && envKey === ENV_KEYS.DEV) ||
-            (isProd && envKey === ENV_KEYS.PROD)
+            (!isProd && envKey === ENVKeys.DEV) ||
+            (isProd && envKey === ENVKeys.PROD)
           ) {
             // match[2] => will be the key
             newManifest[envMatch[2]] = value;

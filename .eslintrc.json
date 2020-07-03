@@ -1,9 +1,17 @@
 {
 	"extends": [
-		"@abhijithvijayan/eslint-config/typescript"
+		"@abhijithvijayan/eslint-config/typescript",
+		"@abhijithvijayan/eslint-config/node"
 	],
+	"parserOptions": {
+		"project": "./tsconfig.json",
+		"sourceType": "module"
+	},
 	"rules": {
 		"no-console": "off",
-		"consistent-return": "off"
+		"consistent-return": "off",
+		"node/no-unsupported-features/es-syntax": ["error", {
+			"ignores": ["modules"]
+		}]
 	}
 }
