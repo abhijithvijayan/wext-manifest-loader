@@ -37,12 +37,11 @@ const schema: any = {
   },
 };
 
-// Manually Forked from `webextension-toolbox/webpack-webextension-plugin`
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const transformVendorKeys = (manifest, vendor: string): any => {
+const transformVendorKeys = (manifest, selectedVendor: string): any => {
   if (Array.isArray(manifest)) {
     return manifest.map((newManifest) => {
-      return transformVendorKeys(newManifest, vendor);
+      return transformVendorKeys(newManifest, selectedVendor);
     });
   }
 
@@ -56,28 +55,33 @@ const transformVendorKeys = (manifest, vendor: string): any => {
         const vendors: string[] = vendorMatch[1].split('|');
 
         // Swap key with non prefixed name
-        if (vendors.indexOf(vendor) > -1) {
+        if (vendors.includes(selectedVendor)) {
           // match[2] => will be the key
-          newManifest[vendorMatch[2]] = value;
+          newManifest[vendorMatch[2]] = transformVendorKeys(
+            value,
+            selectedVendor
+          );
         }
       } else {
         // if no vendor keys are present, check if env keys are present
         const envMatch: RegExpMatchArray | null = key.match(environmentRegExp);
-
         if (envMatch) {
           const isProd: boolean = process.env.NODE_ENV === 'production';
           const envKey: string = envMatch[1];
 
-          // inject keys based on enviroment and keys passed
+          // inject keys based on environment and keys passed
           if (
             (!isProd && envKey === ENVKeys.DEV) ||
             (isProd && envKey === ENVKeys.PROD)
           ) {
             // match[2] => will be the key
-            newManifest[envMatch[2]] = value;
+            newManifest[envMatch[2]] = transformVendorKeys(
+              value,
+              selectedVendor
+            );
           }
         } else {
-          newManifest[key] = transformVendorKeys(value, vendor);
+          newManifest[key] = transformVendorKeys(value, selectedVendor);
         }
       }
 
@@ -120,7 +124,7 @@ export function loader(this, source): string {
 
   if (vendor) {
     // vendor not in list
-    if (browserVendors.indexOf(vendor) < 0) {
+    if (!browserVendors.includes(vendor)) {
       return this.emitError(
         `${LOADER_NAME}: browser ${vendor} is not supported`
       );
