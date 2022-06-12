@@ -28,8 +28,53 @@ describe('transformManifest tests', () => {
   });
 });
 
-describe('Vendor Tests', () => {
-  //
+describe('ENV Tests', () => {
+  it('should return correct JSON for development', () => {
+    expect(
+      transformManifest(
+        JSON.parse(`
+			{
+			  "__dev__content_security_policy": "script-src 'self' http://localhost:8097; object-src 'self'",
+			  "__prod__content_security_policy": "script-src 'self'; object-src 'self'"
+			}
+        `),
+        Browser.CHROME
+      )
+    ).toEqual(
+      JSON.parse(`
+			{
+			  "content_security_policy": "script-src 'self' http://localhost:8097; object-src 'self'"
+			}
+      `)
+    );
+  });
+
+  it('should return correct JSON for production', () => {
+    const currentEnv = process.env.NODE_ENV;
+    // change to prod environment
+    process.env.NODE_ENV = 'production';
+
+    expect(
+      transformManifest(
+        JSON.parse(`
+			{
+			  "__dev__content_security_policy": "script-src 'self' http://localhost:8097; object-src 'self'",
+			  "__prod__content_security_policy": "script-src 'self'; object-src 'self'"
+			}
+        `),
+        Browser.CHROME
+      )
+    ).toEqual(
+      JSON.parse(`
+			{
+			  "content_security_policy": "script-src 'self'; object-src 'self'"
+			}
+      `)
+    );
+
+    // reset back to the existing environment
+    process.env.NODE_ENV = currentEnv;
+  });
 });
 
 describe('chrome tests', () => {
