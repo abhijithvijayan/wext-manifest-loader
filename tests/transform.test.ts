@@ -1,6 +1,10 @@
 import {transformManifest} from '../source/transform';
 import {Browser} from '../source/constants';
 
+import manifest from './manifest.json';
+import chromeOutput from './chrome.json';
+import firefoxOutput from './firefox.json';
+
 describe('transformManifest tests', () => {
   it('should return empty object', () => {
     expect(transformManifest({}, 'chrome')).toEqual({});
@@ -125,6 +129,12 @@ describe('chrome tests', () => {
       `)
     );
   });
+
+  it('should transform whole JSON', () => {
+    expect(transformManifest(manifest as never, Browser.CHROME)).toEqual(
+      chromeOutput
+    );
+  });
 });
 
 describe('firefox tests', () => {
@@ -173,6 +183,12 @@ describe('firefox tests', () => {
 			  }
 			}
       `)
+    );
+  });
+
+  it('should transform whole JSON', () => {
+    expect(transformManifest(manifest as never, Browser.FIREFOX)).toEqual(
+      firefoxOutput
     );
   });
 });
