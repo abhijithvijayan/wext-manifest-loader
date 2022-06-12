@@ -19,6 +19,12 @@
   },
   "author": "abhijithvijayan",
   "minimum_chrome_version": "88",
+  "background": {
+	"scripts": [
+	  "js/background.bundle.js"
+	],
+	"persistent": false
+  },
   "content_scripts": [
 	{
 	  "matches": [

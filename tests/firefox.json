@@ -22,6 +22,11 @@
 	  "strict_min_version": "52.0"
 	}
   },
+  "background": {
+	"scripts": [
+	  "js/background.bundle.js"
+	]
+  },
   "content_scripts": [
 	{
 	  "matches": [

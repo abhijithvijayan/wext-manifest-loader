@@ -14,8 +14,12 @@
   "homepage_url": "https://web.site",
   "short_name": "web.site",
 
-  "host_permissions": [
+  "__dev__host_permissions": [
 	"*://*.web.site/*"
+  ],
+
+  "__prod__host_permissions": [
+	"https://*.web.site/*"
   ],
 
   "__chrome|opera|edge__content_security_policy": {
@@ -39,6 +43,13 @@
 
   "__chrome__minimum_chrome_version": "88",
   "__opera__minimum_opera_version": "74",
+
+  "background": {
+	"scripts": [
+	  "js/background.bundle.js"
+	],
+	"__chrome|opera__persistent": false
+  },
 
   "content_scripts": [{
 	"matches": [
