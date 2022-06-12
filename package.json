@@ -12,16 +12,21 @@
 	"engines": {
 		"node": ">=10.0.0"
 	},
-	"main": "lib/index.js",
-	"types": "lib",
+	"main": "lib/cjs/index.js",
+	"module": "lib/esm/index.js",
+	"types": "lib/cjs/index.d.ts",
 	"files": [
 		"lib"
 	],
 	"scripts": {
-		"dev": "tsc --watch",
-		"build": "rimraf lib && tsc",
+		"watch": "tsc --module esnext --outDir lib/esm --watch",
+		"build:cjs": "tsc --module commonjs --outDir lib/cjs",
+		"build:esm": "tsc --module esnext --outDir lib/esm",
+		"build": "rimraf lib && yarn build:cjs && yarn build:esm",
 		"pack:list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
-		"prepublishOnly": "yarn build",
+		"prepublishOnly": "yarn test && yarn build",
+		"test": "jest",
+		"test:watch": "jest --watch",
 		"lint": "eslint . --ext .ts",
 		"lint:fix": "eslint . --ext .ts --fix"
 	},
@@ -46,6 +51,7 @@
 		"@abhijithvijayan/tsconfig": "^1.3.0",
 		"@babel/eslint-parser": "^7.12.17",
 		"@types/loader-utils": "^2.0.1",
+	  	"@types/jest": "^26.0.23",
 		"@types/node": "^14.14.31",
 		"@typescript-eslint/eslint-plugin": "^4.15.1",
 		"@typescript-eslint/parser": "^4.15.1",
@@ -58,8 +64,10 @@
 		"eslint-plugin-prettier": "^3.3.1",
 		"eslint-plugin-react": "^7.22.0",
 		"eslint-plugin-react-hooks": "^4.2.0",
+	  	"jest": "^26.6.3",
 		"prettier": "^2.2.1",
 		"rimraf": "^3.0.2",
+	  	"ts-jest": "^26.5.6",
 		"typescript": "^4.1.5"
 	}
 }
