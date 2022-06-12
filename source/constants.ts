@@ -5,7 +5,20 @@ export const ENVKeys = {
   PROD: 'prod',
 } as const;
 
-export const browserVendors: string[] = ['chrome', 'firefox', 'opera', 'edge'];
+export const Browser = {
+  CHROME: 'chrome',
+  FIREFOX: 'firefox',
+  OPERA: 'opera',
+  EDGE: 'edge',
+} as const;
+export type BrowserType = typeof Browser[keyof typeof Browser];
+
+export const browserVendors: BrowserType[] = [
+  Browser.CHROME,
+  Browser.FIREFOX,
+  Browser.OPERA,
+  Browser.EDGE,
+];
 export const envVariables: string[] = [ENVKeys.DEV, ENVKeys.PROD];
 
 // https://regex101.com/r/CNy9Qc/1

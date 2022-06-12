@@ -1,8 +1,8 @@
-import {ENV_REGEX, ENVKeys, VENDOR_REGEX} from './constants';
+import {BrowserType, ENV_REGEX, ENVKeys, VENDOR_REGEX} from './constants';
 
 export const transformManifest = (
   manifest: Record<string, string> | string | number,
-  selectedVendor: string
+  selectedVendor: BrowserType
 ): any => {
   if (Array.isArray(manifest)) {
     return manifest.map((newManifest) => {
