@@ -9,12 +9,11 @@ import fs from 'fs';
 import path from 'path';
 import validateOptions from 'schema-utils';
 import {getOptions, interpolateName} from 'loader-utils';
-import {browserVendors, LOADER_NAME} from './constants';
+import {BrowserType, browserVendors, LOADER_NAME} from './constants';
 import {transformManifest} from './transform';
 
 const packageJSONPath: string = path.resolve('./package.json');
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const schema: any = {
   type: 'object',
   properties: {
@@ -24,7 +23,7 @@ const schema: any = {
   },
 };
 
-export function loader(this, source): string {
+export function loader(this: any, source: any): string {
   if (this.cacheable) {
     this.cacheable();
   }
@@ -52,11 +51,10 @@ export function loader(this, source): string {
   }
 
   // get vendor name from env TARGET_BROWSER
-  const vendor: string | undefined = process.env.TARGET_BROWSER;
-
+  const vendor: BrowserType | string | undefined = process.env.TARGET_BROWSER;
+  // vendor not in list
   if (vendor) {
-    // vendor not in list
-    if (!browserVendors.includes(vendor)) {
+    if (!browserVendors.includes(vendor as never)) {
       return this.emitError(
         `${LOADER_NAME}: browser ${vendor} is not supported`
       );
@@ -66,7 +64,7 @@ export function loader(this, source): string {
   }
 
   // Transform manifest
-  const manifest = transformManifest(content, vendor);
+  const manifest = transformManifest(content, vendor as BrowserType);
 
   // update version field with package.json version
   if (usePackageJSONVersion) {
