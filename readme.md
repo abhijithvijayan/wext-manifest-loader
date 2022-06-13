@@ -191,20 +191,23 @@ if the vendor is `chrome` or `opera`, this compiles to:
 }
 ```
 
-### 2. How can I conditionally set keys based on enviroment
+### 2. How can I conditionally set keys based on environment
 
 ```js
 {
   "__dev__name": "NameInDevelopment",
   "__prod__name": "NameInProduction",
+  "__chrome|firefox|dev__description": "DescriptionInDevelopmentForSetOfBrowsers",
+  "__chrome|firefox|prod__description": "DescriptionInProductionForSetOfBrowsers"
 }
 ```
 
-if the **NODE_ENV** is `production` this compiles to:
+if the **NODE_ENV** is `production` and the **TARGET_BROWSER** is `chrome` this compiles to:
 
 ```js
 {
   "name": "NameInProduction",
+  "description": "DescriptionInProductionForSetOfBrowsers"
 }
 ```
 
@@ -213,6 +216,7 @@ else
 ```js
 {
   "name": "NameInDevelopment",
+  "description": "DescriptionInDevelopmentForSetOfBrowsers"
 }
 ```
 
