@@ -21,7 +21,7 @@ export const browserVendors: BrowserType[] = [
 ];
 export const envVariables: string[] = [ENVKeys.DEV, ENVKeys.PROD];
 
-// Refer: https://regex101.com/r/QPoXEr/1
+// Refer: https://regex101.com/r/ddSEHh/1
 export const CUSTOM_PREFIX_REGEX = new RegExp(
   `^__((?:(?:${[...browserVendors, ...envVariables].join('|')})\\|?)+)__(.*)`
 );
