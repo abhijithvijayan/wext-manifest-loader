@@ -1,4 +1,10 @@
-import {BrowserType, ENV_REGEX, ENVKeys, VENDOR_REGEX} from './constants';
+import {
+  CUSTOM_PREFIX_REGEX,
+  browserVendors,
+  envVariables,
+  BrowserType,
+  ENVKeys,
+} from './constants';
 
 export const transformManifest = (
   manifest: Record<string, string> | string | number,
@@ -14,14 +20,43 @@ export const transformManifest = (
     return Object.entries(manifest).reduce(
       (newManifest: Record<string, string>, [key, value]) => {
         // match with vendors regex
-        const vendorMatch: RegExpMatchArray | null = key.match(VENDOR_REGEX);
+        const vendorMatch: RegExpMatchArray | null =
+          key.match(CUSTOM_PREFIX_REGEX);
 
         if (vendorMatch) {
-          // match[1] => 'opera|firefox' => ['opera', 'firefox']
-          const vendors: string[] = vendorMatch[1].split('|');
+          // match[1] => 'opera|firefox|dev' => ['opera', 'firefox', 'dev']
+          const matches: string[] = vendorMatch[1].split('|');
+          const isProd: boolean = process.env.NODE_ENV === 'production';
 
-          // Swap key with non prefixed name
-          if (vendors.includes(selectedVendor)) {
+          const hasCurrentVendor = matches.includes(selectedVendor);
+          const hasVendorKeys = matches.some((m) =>
+            browserVendors.includes(m as never)
+          );
+          const hasEnvKey = matches.some((m) =>
+            envVariables.includes(m as never)
+          );
+
+          const hasCurrentEnvKey =
+            hasEnvKey &&
+            // if production env key is found
+            ((isProd && matches.includes(ENVKeys.PROD)) ||
+              // or if development env key is found
+              (!isProd && matches.includes(ENVKeys.DEV)));
+
+          // handles cases like
+          // 1. __dev__
+          // 2. __chrome__
+          // 3. __chrome|dev__
+
+          if (
+            // case: __chrome|dev__ (current vendor key and current env key)
+            (hasCurrentVendor && hasCurrentEnvKey) ||
+            // case: __dev__ (no vendor keys but current env key)
+            (!hasVendorKeys && hasCurrentEnvKey) ||
+            // case: __chrome__ (no env keys but current vendor key)
+            (!hasEnvKey && hasCurrentVendor)
+          ) {
+            // Swap key with non prefixed name
             // match[2] => will be the key
             newManifest[vendorMatch[2]] = transformManifest(
               value,
@@ -29,26 +64,7 @@ export const transformManifest = (
             );
           }
         } else {
-          // if no vendor keys are present, check if env keys are present
-          const envMatch: RegExpMatchArray | null = key.match(ENV_REGEX);
-          if (envMatch) {
-            const isProd: boolean = process.env.NODE_ENV === 'production';
-            const envKey: string = envMatch[1];
-
-            // inject keys based on environment and keys passed
-            if (
-              (!isProd && envKey === ENVKeys.DEV) ||
-              (isProd && envKey === ENVKeys.PROD)
-            ) {
-              // match[2] => will be the key
-              newManifest[envMatch[2]] = transformManifest(
-                value,
-                selectedVendor
-              );
-            }
-          } else {
-            newManifest[key] = transformManifest(value, selectedVendor);
-          }
+          newManifest[key] = transformManifest(value, selectedVendor);
         }
 
         return newManifest;

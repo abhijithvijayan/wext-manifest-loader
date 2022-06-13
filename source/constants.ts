@@ -21,12 +21,7 @@ export const browserVendors: BrowserType[] = [
 ];
 export const envVariables: string[] = [ENVKeys.DEV, ENVKeys.PROD];
 
-// https://regex101.com/r/CNy9Qc/1
-export const VENDOR_REGEX = new RegExp(
-  `^__((?:(?:${browserVendors.join('|')})\\|?)+)__(.*)`
-);
-
-// https://regex101.com/r/EBf90P/2
-export const ENV_REGEX = new RegExp(
-  `^__((?:(?:${envVariables.join('|')})))__(.*)`
+// Refer: https://regex101.com/r/QPoXEr/1
+export const CUSTOM_PREFIX_REGEX = new RegExp(
+  `^__((?:(?:${[...browserVendors, ...envVariables].join('|')})\\|?)+)__(.*)`
 );

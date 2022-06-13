@@ -22,12 +22,16 @@
 	"https://*.web.site/*"
   ],
 
-  "__chrome|opera|edge__content_security_policy": {
-	"__dev__extension_pages": "script-src 'self' http://localhost:8097; object-src 'self'",
-	"__prod__extension_pages": "script-src 'self'; object-src 'self'"
+  "__chrome|opera|edge|dev__content_security_policy": {
+	"extension_pages": "script-src 'self' http://localhost:8097; object-src 'self'"
   },
 
-  "__firefox__content_security_policy": "script-src 'self' http://localhost:8097; object-src 'self'",
+  "__chrome|opera|edge|prod__content_security_policy": {
+	"extension_pages": "script-src 'self'; object-src 'self'"
+  },
+
+  "__firefox|dev__content_security_policy": "script-src 'self' http://localhost:8097; object-src 'self'",
+  "__firefox|prod__content_security_policy": "script-src 'self'; object-src 'self'",
 
   "__chrome|firefox__author": "abhijithvijayan",
   "__opera__developer": {
