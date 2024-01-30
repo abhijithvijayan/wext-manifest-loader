@@ -11,7 +11,7 @@ export const Browser = {
   OPERA: 'opera',
   EDGE: 'edge',
 } as const;
-export type BrowserType = typeof Browser[keyof typeof Browser];
+export type BrowserType = (typeof Browser)[keyof typeof Browser];
 
 export const browserVendors: BrowserType[] = [
   Browser.CHROME,
