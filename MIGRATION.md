@@ -12,7 +12,7 @@ The loader is now in conjunction with **[wext-manifest-webpack-plugin](https://w
 ### Remove deprecated packages
 
 ```sh
-yarn remove wext-manifest write-webpack-plugin
+npm uninstall wext-manifest write-webpack-plugin
 ```
 
 ### Add loader & plugin
