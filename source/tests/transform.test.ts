@@ -1,9 +1,8 @@
-import {transformManifest} from '../source/transform';
-import {Browser} from '../source/constants';
-
 import manifest from './manifest.json';
 import chromeOutput from './chrome.json';
 import firefoxOutput from './firefox.json';
+import {transformManifest} from '../transform';
+import {Browser} from '../constants';
 
 describe('transformManifest tests', () => {
   it('should return empty object', () => {

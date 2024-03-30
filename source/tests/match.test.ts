@@ -1,4 +1,4 @@
-import {CUSTOM_PREFIX_REGEX} from '../source/constants';
+import {CUSTOM_PREFIX_REGEX} from '../constants';
 
 describe('RegExp tests', () => {
   const invalidMatches = [
