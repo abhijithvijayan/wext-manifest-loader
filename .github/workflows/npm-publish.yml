@@ -1,0 +1,50 @@
+name: Publish package to NPM Registry
+run-name: ${{ github.actor }} started publish action
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Give permission to mint an ID-token for publishing package with provenance
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.18.0'
+          registry-url: 'https://registry.npmjs.org'
+          scope: "@abhijithvijayan"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Linters
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm run test
+
+      - name: Build package
+        run: npm run build
+
+      - name: Publish
+        # https://docs.npmjs.com/generating-provenance-statements
+        run: npm publish --provenance --access public --ignore-scripts # ignore running prepublishOnly script
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

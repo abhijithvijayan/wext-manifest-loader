@@ -19,12 +19,13 @@
 		"lib"
 	],
 	"scripts": {
-		"watch": "tsc --module esnext --outDir lib/esm --watch",
+		"dev": "tsc --module esnext --outDir lib/esm --watch",
+		"dev:cjs": "tsc --module commonjs --outDir lib/cjs --watch",
 		"build:cjs": "tsc --module commonjs --outDir lib/cjs",
 		"build:esm": "tsc --module esnext --outDir lib/esm",
-		"build": "rimraf lib && yarn build:cjs && yarn build:esm",
-		"pack:list": "yarn build && npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
-		"prepublishOnly": "yarn test && yarn build",
+		"build": "rimraf lib && npm run build:cjs && npm run build:esm",
+		"pack:list": "npm pack && tar -xvzf *.tgz && rm -rf package *.tgz",
+		"prepublishOnly": "npm run pack:list",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"lint": "eslint . --ext .ts",
