@@ -48,3 +48,46 @@ jobs:
         run: npm publish --provenance --access public --ignore-scripts # ignore running prepublishOnly script
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  # Notification Job
+  notify_job:
+    runs-on: ubuntu-latest
+    needs: [publish]
+    if: ${{ always() }}
+    steps:
+      - name: Notify Failure on Ntfy
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: |
+          curl \
+            -H "Authorization: Bearer ${{ secrets.NTFY_TOKEN }}" \
+            -H "Title: Publish Job Failed" \
+            -H "Priority: urgent" \
+            -H "Tags: warning,x" \
+            -H "Content-Type: text/plain" \
+            -d $'Repo: ${{ github.repository }}\nCommit: ${{ github.sha }}\nRef: ${{ github.ref }}\nStatus: ${{ job.status}}' \
+            ${{ secrets.NTFY_URL }}
+
+      - name: Notify Cancellation on Ntfy
+        if: ${{ contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped') }}
+        run: |
+          curl \
+            -H "Authorization: Bearer ${{ secrets.NTFY_TOKEN }}" \
+            -H "Title: Publish Job Cancelled/Skipped" \
+            -H "Priority: urgent" \
+            -H "Tags: warning,x" \
+            -H "Content-Type: text/plain" \
+            -d $'Repo: ${{ github.repository }}\nCommit: ${{ github.sha }}\nRef: ${{ github.ref }}\nStatus: ${{ job.status}}' \
+            ${{ secrets.NTFY_URL }}
+
+      - name: Notify Publish Completion on Ntfy
+        # https://docs.github.com/en/actions/learn-github-actions/contexts#needs-context
+        if: ${{ success() && !(contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'skipped')) }}
+        run: |
+          curl \
+            -H "Authorization: Bearer ${{ secrets.NTFY_TOKEN }}" \
+            -H "Title: Publish Job Successful" \
+            -H "Priority: default" \
+            -H "Tags: white_check_mark" \
+            -H "Content-Type: text/plain" \
+            -d $'Repo: ${{ github.repository }}\nCommit: ${{ github.sha }}\nRef: ${{ github.ref }}\nStatus: ${{ job.status}}' \
+            ${{ secrets.NTFY_URL }}
