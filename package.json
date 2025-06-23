@@ -55,7 +55,7 @@
 	"dependencies": {
 		"loader-utils": "^2.0.4",
 		"schema-utils": "^2.7.1",
-		"wext-manifest-transformer": "^1.1.0"
+		"wext-manifest-transformer": "^1.1.1"
 	},
 	"devDependencies": {
 		"@abhijithvijayan/eslint-config": "^2.8.0",
