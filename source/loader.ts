@@ -9,8 +9,11 @@ import fs from 'fs';
 import path from 'path';
 import validateOptions from 'schema-utils';
 import {getOptions, interpolateName} from 'loader-utils';
-import {BrowserType, browserVendors, LOADER_NAME} from './constants';
-import {transformManifest} from './transform';
+import transformer, {
+  BrowserType,
+  browserVendors,
+} from 'wext-manifest-transformer';
+import {LOADER_NAME} from './constants';
 
 const packageJSONPath: string = path.resolve('./package.json');
 
@@ -64,7 +67,11 @@ export function loader(this: any, source: any): string {
   }
 
   // Transform manifest
-  const manifest = transformManifest(content, vendor as BrowserType);
+  const manifest = transformer(
+    content,
+    vendor as BrowserType,
+    process.env.NODE_ENV || 'development'
+  );
 
   // update version field with package.json version
   if (usePackageJSONVersion) {

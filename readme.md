@@ -7,7 +7,6 @@
   <a href="https://travis-ci.com/abhijithvijayan/wext-manifest-loader">
     <img src="https://travis-ci.com/abhijithvijayan/wext-manifest-loader.svg?branch=main" alt="Travis Build" />
   </a>
-  </a>
   <a href="https://david-dm.org/abhijithvijayan/wext-manifest-loader">
     <img src="https://img.shields.io/david/abhijithvijayan/wext-manifest-loader.svg?colorB=orange" alt="DEPENDENCIES" />
   </a>
