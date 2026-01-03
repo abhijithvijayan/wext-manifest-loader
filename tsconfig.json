@@ -5,8 +5,9 @@
 	"lib": [
 	  "dom",
 	  "dom.iterable",
-	  "esnext"
-	]
+	  "ES2022"
+	],
+	"resolveJsonModule": true
   },
   "include": [
 	"source",
@@ -14,6 +15,8 @@
 	"jest.config.js"
   ],
   "exclude": [
+	"node_modules",
+	"lib",
 	"tests/**/*.test.ts"
   ]
 }

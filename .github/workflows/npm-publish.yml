@@ -24,12 +24,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js 20
+      - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: '20.19.2'
+          node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
-          scope: "@abhijithvijayan"
 
       - name: Install dependencies
         run: npm install
@@ -43,11 +42,10 @@ jobs:
       - name: Build package
         run: npm run build
 
-      - name: Publish
-        # https://docs.npmjs.com/generating-provenance-statements
-        run: npm publish --provenance --access public --ignore-scripts # ignore running prepublishOnly script
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # npm CLI v11.5.1+ required for OIDC trusted publishing
+      # Provenance is automatic with trusted publishing
+      - name: Publish with OIDC
+        run: npm publish --access public
 
   # Notification Job
   notify_job:

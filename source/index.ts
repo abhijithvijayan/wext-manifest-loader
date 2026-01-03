@@ -1,7 +1,3 @@
-import {loader} from './loader';
+import { loader } from "./loader.js";
 
 export default loader;
-
-// For CommonJS default export support
-module.exports = loader;
-module.exports.default = loader;

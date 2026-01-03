@@ -1,1 +1,1 @@
-export const LOADER_NAME = 'wext-manifest-loader';
+export const LOADER_NAME = "wext-manifest-loader";
