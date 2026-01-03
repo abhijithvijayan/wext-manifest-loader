@@ -1,35 +1,24 @@
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import eslintConfigPrettier from 'eslint-config-prettier';
-import eslintPluginPrettier from 'eslint-plugin-prettier';
-import globals from 'globals';
+import nodeConfig from '@abhijithvijayan/eslint-config/node';
+import tsConfig from '@abhijithvijayan/eslint-config/typescript';
 
-export default tseslint.config(
+export default [
   {
     ignores: ['node_modules/**', 'lib/**', '*.js', '*.mjs'],
   },
-  eslint.configs.recommended,
-  ...tseslint.configs.recommended,
-  eslintConfigPrettier,
+  ...nodeConfig({
+    files: ['**/*.ts'],
+  }),
+  ...tsConfig({
+    files: ['**/*.ts'],
+  }),
   {
-    plugins: {
-      prettier: eslintPluginPrettier,
-    },
-    languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.jest,
-      },
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
+    files: ['**/*.ts'],
     rules: {
-      'prettier/prettier': 'error',
       'no-console': 'off',
       '@typescript-eslint/no-use-before-define': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
+      // Disable due to resolver issues in ESM
+      'import-x/no-duplicates': 'off',
     },
-  }
-);
+  },
+];
